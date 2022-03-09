@@ -27,3 +27,13 @@ rule contribution_time_series_plot:
     output: "build/{country}-{sector}-time-series.png"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/time_series.py"
+
+
+rule netcdf_to_csv:
+    message: "Transform {wildcards.filename}.nc to csv."
+    input:
+        script = "scripts/analyse/to_csv.py",
+        nc = "build/{filename}.nc"
+    output: "build/{filename}.csv"
+    conda: "../envs/default.yaml"
+    script: "../scripts/analyse/to_csv.py"

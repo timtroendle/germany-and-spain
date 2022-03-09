@@ -22,7 +22,16 @@ rule all:
             "build/{country}-{sector}-time-series.png",
             country=COUNTRIES,
             sector=SECTORS
-            )
+        ),
+        expand(
+            "build/relative-cumulative-contribution-factors-{sector}.csv",
+            sector=SECTORS
+        ),
+        expand(
+            "build/multiplicative-contribution-factors-{sector}.csv",
+            sector=SECTORS
+        )
+
 
 
 def pandoc_options(wildcards):
