@@ -2,7 +2,11 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
+include: "rules/analyse.smk"
 
+
+COUNTRIES = ["Germany", "Spain"]
+SECTORS = ["total", "industry", "transport", "power"]
 
 onsuccess:
     if "email" in config.keys():
@@ -14,7 +18,11 @@ onerror:
 rule all:
     message: "Run entire analysis and compile report."
     input:
-        "build/report.html"
+        expand(
+            "build/{country}-{sector}-time-series.png",
+            country=COUNTRIES,
+            sector=SECTORS
+            )
 
 
 def pandoc_options(wildcards):
