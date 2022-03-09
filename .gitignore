@@ -1,6 +1,9 @@
 # generated files
 build/
 
+# notebooks
+notebooks
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

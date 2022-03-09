@@ -1,2 +1,18 @@
 # The right place for all your configuration values.
-dummmy: 4
+data-sources:
+    excel:
+        path: "data/Germany & Spain Data.xlsx"
+        datasets:
+            - ["Total", "emissions", 4]
+            - ["Total", "energy", 9]
+            - ["Total", "gdp", 14]
+            - ["Total", "population", 19]
+            - ["Industry", "emissions", 3]
+            - ["Industry", "energy", 8]
+            - ["Industry", "gdp", 13]
+            - ["Transport", "emissions", 3]
+            - ["Transport", "energy", 8]
+            - ["Transport", "gdp", 13]
+            - ["Power", "emissions", 3]
+            - ["Power", "energy-in", 8]
+            - ["Power", "energy-out", 13]
