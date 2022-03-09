@@ -43,6 +43,16 @@ To generate a PDF of the dependency graph of all steps `build/dag.pdf` run:
 * `data`: place for raw data
 * `build`: will contain all results (does not exist initially)
 
+## Data sources
+
+This project uses and contains data from eurostat, destatis, and Instituto Nacional de Estadísticas.
+
+Source: [eurostat](https://ec.europa.eu/eurostat/web/main/home), 2022
+
+Source: Bevölkerungsstand, [Statistisches Bundesamt (Destatis)](https://www.destatis.de), 2022
+
+Source: [Instituto Nacional de Estadísticas](www.ine.es)
+
 ## License
 
 The code in this repo is MIT licensed, see `./LICENSE.md`.
