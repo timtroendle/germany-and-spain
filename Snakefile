@@ -30,6 +30,10 @@ rule all:
         expand(
             "build/multiplicative-contribution-factors-{sector}.csv",
             sector=SECTORS
+        ),
+        expand(
+            "build/periods-{sector}.csv",
+            sector=SECTORS
         )
 
 

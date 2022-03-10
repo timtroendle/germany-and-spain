@@ -18,6 +18,18 @@ rule relative_cumulative_contributions:
     script: "../scripts/analyse/cumulative.py"
 
 
+rule periods:
+    message: "Calculate cumulative contribution during crises in sector {wildcards.sector}."
+    input:
+        script = "scripts/analyse/periods.py",
+        data = "build/multiplicative-contribution-factors-{sector}.nc"
+    params:
+        periods = config["parameters"]["periods"]
+    output: "build/periods-{sector}.nc"
+    conda: "../envs/default.yaml"
+    script: "../scripts/analyse/periods.py"
+
+
 rule contribution_time_series_plot:
     message: "Plot contribution time series of all factors in sector {wildcards.sector} "
              + "in country {wildcards.country}."
