@@ -27,18 +27,22 @@ def time_series_plot(path_to_contribution_factors: str, country: str, sector: st
         .open_dataset(path_to_contribution_factors)
         .sel(country=country)
         .to_dataframe()
+        .rename(columns=lambda name: name.replace("-", " ").capitalize().replace("Gdp", "GDP"))
+        .rename_axis(index="Year")
     )
 
     fig = plt.figure(figsize=(8, 3))
     ax = fig.add_subplot(111)
 
+    factors["Emissions"].plot(ax=ax, linewidth=2.5, color=COLOR_PALETTE[0])
+    ax.set_prop_cycle(color=COLOR_PALETTE[:6], linestyle=['-', '--', '-.', ':', '--', '-.'])
     factors.plot(ax=ax)
 
-    ax.set_ylabel("Change since crisis")
+    ax.set_ylabel("Change since 1998")
     ax.get_xaxis().set_major_locator(MultipleLocator(10))
     ax.get_xaxis().set_minor_locator(MultipleLocator(1))
-    ax.set_title(f"{country} -- {sector}")
-    sns.despine(fig, right=False)
+    ax.set_title(f"{country} — {sector}")
+    sns.despine(fig)
     fig.tight_layout()
     fig.savefig(path_to_plot)
 
