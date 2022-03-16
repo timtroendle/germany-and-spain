@@ -16,7 +16,21 @@ data-sources:
             - ["Power", "emissions", 3]
             - ["Power", "energy-in", 8]
             - ["Power", "energy-out", 13]
+    primary-energy:
+        url: https://nyc3.digitaloceanspaces.com/owid-public/data/energy/owid-energy-data.csv
+        columns:
+            - coal_consumption
+            - oil_consumption
+            - gas_consumption
+            - hydro_consumption
+            - nuclear_consumption
+            - biofuel_consumption
+            - other_renewable_consumption
+            - solar_consumption
+            - wind_consumption
 parameters:
+    first-year: 1998
+    final-year: 2021
     periods:
         Germany:
             pre: [1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007]

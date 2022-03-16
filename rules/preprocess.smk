@@ -22,3 +22,24 @@ rule factors:
         power = "build/factors-power.nc"
     conda: "../envs/preprocess.yaml"
     script: "../scripts/preprocess/factors.py"
+
+
+rule download_primary_energy:
+    message: "Download primary energy data."
+    params: url = config["data-sources"]["primary-energy"]["url"]
+    output: protected("data/automatic/raw-primary-energy.csv")
+    shell: "curl -sLo {output} '{params.url}'"
+
+
+rule primary_energy:
+    message: "Preprocess primary energy data."
+    input:
+        script = "scripts/preprocess/primary_energy.py",
+        data = rules.download_primary_energy.output[0]
+    params:
+        countries = COUNTRIES,
+        years = range(config["parameters"]["first-year"], config["parameters"]["final-year"] + 1),
+        columns = config["data-sources"]["primary-energy"]["columns"]
+    output: "build/primary-energy-twh.csv"
+    conda: "../envs/preprocess.yaml"
+    script: "../scripts/preprocess/primary_energy.py"

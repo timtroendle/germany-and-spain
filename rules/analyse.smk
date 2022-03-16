@@ -41,6 +41,16 @@ rule contribution_time_series_plot:
     script: "../scripts/analyse/time_series.py"
 
 
+rule primary_energy_plot:
+    message: "Plot sources of primary energy over time in country {wildcards.country}."
+    input:
+        script = "scripts/analyse/primary_energy.py",
+        data = rules.primary_energy.output[0]
+    output: "build/{country}-primary-energy.png"
+    conda: "../envs/default.yaml"
+    script: "../scripts/analyse/primary_energy.py"
+
+
 rule netcdf_to_csv:
     message: "Transform {wildcards.filename}.nc to csv."
     input:

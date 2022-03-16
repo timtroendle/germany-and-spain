@@ -1,12 +1,12 @@
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablenos --citeproc"
 
+COUNTRIES = ["Germany", "Spain"]
+SECTORS = ["total", "industry", "transport", "power"]
+
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
 include: "rules/analyse.smk"
 
-
-COUNTRIES = ["Germany", "Spain"]
-SECTORS = ["total", "industry", "transport", "power"]
 
 onsuccess:
     if "email" in config.keys():
@@ -24,6 +24,10 @@ rule all:
             sector=SECTORS
         ),
         expand(
+            "build/{country}-primary-energy.png",
+            country=COUNTRIES
+        ),
+        expand(
             "build/relative-cumulative-contribution-factors-{sector}.csv",
             sector=SECTORS
         ),
@@ -35,7 +39,6 @@ rule all:
             "build/periods-{sector}.csv",
             sector=SECTORS
         )
-
 
 
 def pandoc_options(wildcards):
