@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import seaborn as sns
+import pint
 
 
 COLOURS = {
@@ -16,11 +17,14 @@ COLOURS = {
     "Other renewable": "#e062db",
 }
 
+UREG = pint.UnitRegistry()
+
 
 def primary_energy(path_to_data: str, country: str, path_to_plot: str):
     df = (
         pd
         .read_csv(path_to_data, index_col=[0, 1])
+        .pipe(from_twh_to_exajoules)
         .to_xarray()
         .sel(country=country)
         .to_dataframe()
@@ -33,25 +37,33 @@ def primary_energy(path_to_data: str, country: str, path_to_plot: str):
 
     ax.stackplot(
         df.index.values,
-        df.div(1000).to_dict(orient="list").values(),
+        df.to_dict(orient="list").values(),
         colors=[COLOURS[tech] for tech in df.columns.values],
         labels=df.columns.values,
         alpha=0.7
     )
     ax.legend(bbox_to_anchor=(1.0, 1.0), loc="upper left")
     ax.set_title(country)
-    ax.set_ylabel("Primary energy consumption (PWh)")
+    ax.set_ylabel("Primary energy consumption (EJ)")
     ax.get_xaxis().set_major_locator(MultipleLocator(10))
     ax.get_xaxis().set_minor_locator(MultipleLocator(1))
 
-    ax.get_yaxis().set_major_locator(MultipleLocator(1))
-    ax.get_yaxis().set_minor_locator(MultipleLocator(0.25))
-    if ax.get_ylim()[1] < 2:
-        ax.set_ylim(top=2)
+    ax.get_yaxis().set_major_locator(MultipleLocator(5))
+    ax.get_yaxis().set_minor_locator(MultipleLocator(1))
+    if ax.get_ylim()[1] < 10:
+        ax.set_ylim(top=10)
 
     sns.despine(fig)
     fig.tight_layout()
     fig.savefig(path_to_plot)
+
+
+def from_twh_to_exajoules(df: pd.DataFrame):
+    return pd.DataFrame(
+        data=(df.values * UREG("TWh")).to(UREG("EJ")).magnitude,
+        index=df.index,
+        columns=df.columns
+    )
 
 
 if __name__ == "__main__":
