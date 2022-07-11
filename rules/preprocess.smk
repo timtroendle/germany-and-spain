@@ -1,7 +1,6 @@
 rule extract_data_from_excel:
     message: "Extract all input data from Excel file."
     input:
-        script = "scripts/preprocess/extract.py",
         data = config["data-sources"]["excel"]["path"]
     params:
         dataset_config = config["data-sources"]["excel"]["datasets"]
@@ -13,7 +12,6 @@ rule extract_data_from_excel:
 rule factors:
     message: "Derive factors from raw data."
     input:
-        script = "scripts/preprocess/factors.py",
         data = rules.extract_data_from_excel.output[0]
     output:
         total = "build/factors-total.nc",
@@ -34,7 +32,6 @@ rule download_primary_energy:
 rule primary_energy:
     message: "Preprocess primary energy data."
     input:
-        script = "scripts/preprocess/primary_energy.py",
         data = rules.download_primary_energy.output[0]
     params:
         countries = COUNTRIES,

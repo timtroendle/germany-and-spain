@@ -1,3 +1,5 @@
+from snakemake.utils import min_version
+
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablenos --citeproc"
 
 COUNTRIES = ["Germany", "Spain"]
@@ -6,6 +8,7 @@ SECTORS = ["total", "industry", "transport", "power"]
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
 include: "rules/analyse.smk"
+min_version("7.8")
 
 
 onsuccess:

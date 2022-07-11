@@ -8,11 +8,11 @@ This repository contains the entire scientific project, including code and repor
 
 You need [mamba](https://mamba.readthedocs.io/en/latest/) to run the analysis. Using mamba, you can create an environment from within you can run it:
 
-    mamba env create -f environment.yaml
+    mamba env create -f environment.yaml --no-default-packages
 
 ## Run the analysis
 
-    snakemake --cores 1 --use-conda
+    snakemake --profile profiles/default
 
 This will run all analysis steps to reproduce results and eventually build the report.
 
@@ -20,17 +20,17 @@ You can also run certain parts only by using other `snakemake` rules; to get a l
 
 To generate a PDF of the dependency graph of all steps `build/dag.pdf` run:
 
-    snakemake --use-conda --cores 1 -f dag
+    snakemake --profile profiles/default -f dag
 
 ## Be notified of build successes or fails
 
   As the execution of this workflow may take a while, you can be notified whenever the execution terminates either successfully or unsuccessfully. Notifications are sent by email. To activate notifications, add the email address of the recipient to the configuration key `email`. You can add the key to your configuration file, or you can run the workflow the following way to receive notifications:
 
-      snakemake --cores 1 --use-conda --config email=<your-email>
+      snakemake --profile profiles/default test --config email=<your-email>
 
 ## Run the tests
 
-    snakemake --use-conda --cores 1 test
+    snakemake --profile profiles/default test test
 
 ## Repo structure
 
