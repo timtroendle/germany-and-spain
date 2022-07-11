@@ -1,6 +1,6 @@
 # The right place for all your configuration values.
 data-sources:
-    excel:
+    factors:
         path: "data/Germany & Spain Data.xlsx"
         datasets:
             - ["Total", "emissions", 4]
@@ -17,17 +17,17 @@ data-sources:
             - ["Power", "energy-in", 8]
             - ["Power", "energy-out", 13]
     primary-energy:
-        url: https://nyc3.digitaloceanspaces.com/owid-public/data/energy/owid-energy-data.csv
-        columns:
-            - coal_consumption
-            - oil_consumption
-            - gas_consumption
-            - hydro_consumption
-            - nuclear_consumption
-            - biofuel_consumption
-            - other_renewable_consumption
-            - solar_consumption
-            - wind_consumption
+        path: "data/Germany & Spain Data.xlsx"
+        datasets:
+            - ["Primary energy", "coal", 2]
+            - ["Primary energy", "oil", 7]
+            - ["Primary energy", "gas", 12]
+            - ["Primary energy", "hydro", 17]
+            - ["Primary energy", "nuclear", 22]
+            - ["Primary energy", "biofuel", 47]
+            - ["Primary energy", "solar", 37]
+            - ["Primary energy", "wind", 42]
+            - ["Primary energy", "other renewable", 52]
 parameters:
     first-year: 1998
     final-year: 2021

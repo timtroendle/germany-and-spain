@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import seaborn as sns
-import pint
 
 
 COLOURS = {
@@ -16,8 +15,6 @@ COLOURS = {
     "Wind": "#674ea7",
     "Other renewable": "#e062db",
 }
-
-UREG = pint.UnitRegistry()
 
 
 def primary_energy(path_to_data: str, country: str, path_to_plot: str):
@@ -60,7 +57,7 @@ def primary_energy(path_to_data: str, country: str, path_to_plot: str):
 
 def from_twh_to_exajoules(df: pd.DataFrame):
     return pd.DataFrame(
-        data=(df.values * UREG("TWh")).to(UREG("EJ")).magnitude,
+        data=df.values,
         index=df.index,
         columns=df.columns
     )
