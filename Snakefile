@@ -27,6 +27,10 @@ rule all:
             sector=SECTORS
         ),
         expand(
+            "build/{country}-sectoral-emissions.png",
+            country=COUNTRIES
+        ),
+        expand(
             "build/{country}-primary-energy.png",
             country=COUNTRIES
         ),

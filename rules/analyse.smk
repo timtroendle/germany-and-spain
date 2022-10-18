@@ -46,6 +46,19 @@ rule primary_energy_plot:
     script: "../scripts/analyse/primary_energy.py"
 
 
+rule emissions_plot:
+    message: "Plot sectoral emission time series."
+    input:
+        industry = "build/factors-industry.nc",
+        transport = "build/factors-transport.nc",
+        power = "build/factors-power.nc"
+    output: "build/{country}-sectoral-emissions.png"
+    wildcard_constraints:
+        country = "|".join(COUNTRIES)
+    conda: "../envs/default.yaml"
+    script: "../scripts/analyse/sectoral_emissions.py"
+
+
 rule netcdf_to_csv:
     message: "Transform {wildcards.filename}.nc to csv."
     input:
