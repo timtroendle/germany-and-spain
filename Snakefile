@@ -97,6 +97,15 @@ rule dag:
          """
 
 
+rule push:
+    message: "Package, zip, and move entire build."
+    params: push_directory = config["push-directory"]
+    shell:
+        """
+        zip -r {params.push_directory}/germany-and-spain-$(date -Idate).zip build
+        """
+
+
 rule clean: # removes all generated results
     message: "Remove all build results but keep downloaded data."
     run:
