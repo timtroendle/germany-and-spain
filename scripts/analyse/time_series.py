@@ -49,7 +49,8 @@ def time_series_plot_single_countries(factors: pd.DataFrame, country: str, secto
     ax.set_prop_cycle(color=COLOR_PALETTE[:6], linestyle=['-', '--', '-.', ':', '--', '-.'])
     factors.plot(ax=ax)
     ax.set_ylabel("Change since 1998")
-    ax.get_xaxis().set_major_locator(MultipleLocator(10))
+    ax.set_xlabel("Year")
+    ax.get_xaxis().set_major_locator(MultipleLocator(2))
     ax.get_xaxis().set_minor_locator(MultipleLocator(1))
     ax.set_title(f"{country}")
     if legend:

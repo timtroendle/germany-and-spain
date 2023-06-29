@@ -58,10 +58,10 @@ def time_series_plot_single_country(industry: pd.DataFrame, power: pd.DataFrame,
     ax.plot(industry.div(industry.iloc[0]), label="Industry")
     ax.plot(power.div(power.iloc[0]), label="Power")
     ax.plot(transport.div(transport.iloc[0]), label="Transport")
-    ax.legend()
 
     ax.set_ylabel(f"Change since {FIRST_YEAR}")
-    ax.get_xaxis().set_major_locator(MultipleLocator(10))
+    ax.set_xlabel("Year")
+    ax.get_xaxis().set_major_locator(MultipleLocator(2))
     ax.get_xaxis().set_minor_locator(MultipleLocator(1))
     ax.set_title(country)
     if legend:
