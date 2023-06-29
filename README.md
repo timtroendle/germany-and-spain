@@ -2,7 +2,7 @@
 
 A Kaya-like decomposition of CO2 emissions in Germany and Spain.
 
-This repository contains the entire scientific project, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
+This repository contains the entire scientific project. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
 ## Getting ready
 
@@ -14,7 +14,7 @@ You need [mamba](https://mamba.readthedocs.io/en/latest/) to run the analysis. U
 
     snakemake
 
-This will run all analysis steps to reproduce results and eventually build the report.
+This will run all analysis steps to reproduce results.
 
 You can also run certain parts only by using other `snakemake` rules; to get a list of all rules run `snakemake --list`.
 
@@ -34,7 +34,6 @@ To generate a PDF of the dependency graph of all steps `build/dag.pdf` run:
 
 ## Repo structure
 
-* `report`: contains all files necessary to build the report; plots and result files are not in here but generated automatically
 * `scripts`: contains the Python source code as scripts
 * `rules`: contains Snakemake rule definitions
 * `envs`: contains execution environments
