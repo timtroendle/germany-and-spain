@@ -1,3 +1,4 @@
 use-conda: True
 conda-frontend: mamba
-cores: 2
+conda-prefix: ../envs/snakemake/germany-and-spain
+cores: 4
