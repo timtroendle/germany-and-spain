@@ -52,7 +52,6 @@ def primary_energy_single_country(df: pd.DataFrame, country: str, ax: plt.Axes, 
         ax.legend(bbox_to_anchor=(1, 1), loc="upper left", frameon=False)
     ax.set_title(country)
     ax.set_ylabel("Primary energy\nconsumption (EJ)")
-    ax.set_xlabel("Year")
     ax.get_xaxis().set_major_locator(MultipleLocator(2))
     ax.get_xaxis().set_minor_locator(MultipleLocator(1))
 

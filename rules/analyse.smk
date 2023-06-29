@@ -31,6 +31,7 @@ rule contribution_time_series_plot:
     message: "Plot contribution time series of all factors in sector {wildcards.sector}."
     input:
         data = "build/results/relative-cumulative-contribution-factors-{sector}.nc"
+    params: periods = config["parameters"]["periods"]
     output: "build/figures/{sector}-time-series.png"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/time_series.py"
@@ -51,6 +52,7 @@ rule emissions_plot:
         industry = "build/data/factors-industry.nc",
         transport = "build/data/factors-transport.nc",
         power = "build/data/factors-power.nc"
+    params: periods = config["parameters"]["periods"]
     output: "build/figures/sectoral-emissions.png"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/sectoral_emissions.py"
