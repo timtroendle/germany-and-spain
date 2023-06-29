@@ -22,28 +22,28 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         expand(
-            "build/{country}-{sector}-time-series.png",
+            "build/figures/{country}-{sector}-time-series.png",
             country=COUNTRIES,
             sector=SECTORS
         ),
         expand(
-            "build/{country}-sectoral-emissions.png",
+            "build/figures/{country}-sectoral-emissions.png",
             country=COUNTRIES
         ),
         expand(
-            "build/{country}-primary-energy.png",
+            "build/figures/{country}-primary-energy.png",
             country=COUNTRIES
         ),
         expand(
-            "build/relative-cumulative-contribution-factors-{sector}.csv",
+            "build/results/relative-cumulative-contribution-factors-{sector}.csv",
             sector=SECTORS
         ),
         expand(
-            "build/multiplicative-contribution-factors-{sector}.csv",
+            "build/results/multiplicative-contribution-factors-{sector}.csv",
             sector=SECTORS
         ),
         expand(
-            "build/periods-{sector}.csv",
+            "build/results/periods-{sector}.csv",
             sector=SECTORS
         )
 
