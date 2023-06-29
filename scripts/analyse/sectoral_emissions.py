@@ -23,23 +23,37 @@ sns.set_palette(COLOR_PALETTE)
 FIRST_YEAR = 1998
 
 
-def time_series_plot(path_to_industry: str, path_to_power: str, path_to_transport: str,
-                     country: str, path_to_plot: str):
+def time_series_plot_all_countries(path_to_industry: str, path_to_power: str, path_to_transport: str,
+                                   path_to_plot: str):
     industry, power, transport = [
         (
             xr
             .open_dataset(path)["emissions"]
-            .sel(country=country)
-            .to_dataframe()["emissions"]
-            .rename_axis(index="Year")
-            .loc[FIRST_YEAR:]
         )
         for path in [path_to_industry, path_to_power, path_to_transport]
     ]
+    fig = plt.figure(figsize=(8, 4))
+    axes = fig.subplots(len(industry.country), 1, sharex=True, sharey=True)
+    for i, (ax, country) in enumerate(zip(axes, industry.country)):
+        time_series = [
+            (
+                ds
+                .sel(country=country, drop=True)
+                .to_dataframe()
+                .rename_axis(index="Year")
+                .loc[FIRST_YEAR:]
+            )
+            for ds in [industry, power, transport]
+        ]
+        time_series_plot_single_country(*time_series, country.item(), ax, legend=True if i == 0 else False)
 
-    fig = plt.figure(figsize=(8, 3))
-    ax = fig.add_subplot(111)
+    sns.despine(fig)
+    fig.tight_layout()
+    fig.savefig(path_to_plot)
 
+
+def time_series_plot_single_country(industry: pd.DataFrame, power: pd.DataFrame, transport: pd.DataFrame,
+                                    country: str, ax: plt.Axes, legend: bool):
     ax.set_prop_cycle(color=COLOR_PALETTE[:6], linestyle=['-', '--', '-.', ':', '--', '-.'])
     ax.plot(industry.div(industry.iloc[0]), label="Industry")
     ax.plot(power.div(power.iloc[0]), label="Power")
@@ -49,17 +63,17 @@ def time_series_plot(path_to_industry: str, path_to_power: str, path_to_transpor
     ax.set_ylabel(f"Change since {FIRST_YEAR}")
     ax.get_xaxis().set_major_locator(MultipleLocator(10))
     ax.get_xaxis().set_minor_locator(MultipleLocator(1))
-    ax.set_title(f"Sectoral emissions in {country}")
-    sns.despine(fig)
-    fig.tight_layout()
-    fig.savefig(path_to_plot)
+    ax.set_title(country)
+    if legend:
+        ax.legend(bbox_to_anchor=(1, 1), loc="upper left", frameon=False)
+    else:
+        ax.legend().remove()
 
 
 if __name__ == "__main__":
-    time_series_plot(
+    time_series_plot_all_countries(
         path_to_industry=snakemake.input.industry,
         path_to_power=snakemake.input.power,
         path_to_transport=snakemake.input.transport,
-        country=snakemake.wildcards.country,
         path_to_plot=snakemake.output[0]
     )

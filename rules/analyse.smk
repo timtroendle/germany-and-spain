@@ -28,20 +28,19 @@ rule periods:
 
 
 rule contribution_time_series_plot:
-    message: "Plot contribution time series of all factors in sector {wildcards.sector} "
-             + "in country {wildcards.country}."
+    message: "Plot contribution time series of all factors in sector {wildcards.sector}."
     input:
         data = "build/results/relative-cumulative-contribution-factors-{sector}.nc"
-    output: "build/figures/{country}-{sector}-time-series.png"
+    output: "build/figures/{sector}-time-series.png"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/time_series.py"
 
 
 rule primary_energy_plot:
-    message: "Plot sources of primary energy over time in country {wildcards.country}."
+    message: "Plot sources of primary energy over time."
     input:
         data = rules.primary_energy.output[0]
-    output: "build/figures/{country}-primary-energy.png"
+    output: "build/figures/primary-energy.png"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/primary_energy.py"
 
@@ -52,9 +51,7 @@ rule emissions_plot:
         industry = "build/data/factors-industry.nc",
         transport = "build/data/factors-transport.nc",
         power = "build/data/factors-power.nc"
-    output: "build/figures/{country}-sectoral-emissions.png"
-    wildcard_constraints:
-        country = "|".join(COUNTRIES)
+    output: "build/figures/sectoral-emissions.png"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/sectoral_emissions.py"
 

@@ -20,18 +20,12 @@ rule all:
     message: "Run all analysis steps."
     input:
         expand(
-            "build/figures/{country}-{sector}-time-series.png",
+            "build/figures/{sector}-time-series.png",
             country=COUNTRIES,
             sector=SECTORS
         ),
-        expand(
-            "build/figures/{country}-sectoral-emissions.png",
-            country=COUNTRIES
-        ),
-        expand(
-            "build/figures/{country}-primary-energy.png",
-            country=COUNTRIES
-        ),
+        "build/figures/sectoral-emissions.png",
+        "build/figures/primary-energy.png",
         expand(
             "build/results/relative-cumulative-contribution-factors-{sector}.csv",
             sector=SECTORS

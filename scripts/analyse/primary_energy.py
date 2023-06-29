@@ -17,21 +17,30 @@ COLOURS = {
 }
 
 
-def primary_energy(path_to_data: str, country: str, path_to_plot: str):
-    df = (
+def primary_energy_all_countries(path_to_data: str, path_to_plot: str):
+    ds = (
         pd
         .read_csv(path_to_data, index_col=[0, 1])
-        .pipe(from_twh_to_exajoules)
         .to_xarray()
-        .sel(country=country)
-        .to_dataframe()
-        .drop(columns=["country"])
-        .rename(columns=lambda name: name.replace("_consumption", "").replace("_", " ").capitalize())
     )
 
-    fig = plt.figure(figsize=(8, 3))
-    ax = fig.add_subplot(111)
+    fig = plt.figure(figsize=(8, 4))
+    axes = fig.subplots(len(ds.country), 1, sharex=True, sharey=True)
+    for i, (ax, country) in enumerate(zip(axes, ds.country)):
+        df = (
+            ds
+            .sel(country=country, drop=True)
+            .to_dataframe()
+            .rename(columns=str.capitalize)
+        )
+        primary_energy_single_country(df, country.item(), ax, legend=True if i == 0 else False)
 
+    sns.despine(fig)
+    fig.tight_layout()
+    fig.savefig(path_to_plot)
+
+
+def primary_energy_single_country(df: pd.DataFrame, country: str, ax: plt.Axes, legend: bool):
     ax.stackplot(
         df.index.values,
         df.to_dict(orient="list").values(),
@@ -39,9 +48,10 @@ def primary_energy(path_to_data: str, country: str, path_to_plot: str):
         labels=df.columns.values,
         alpha=0.7
     )
-    ax.legend(bbox_to_anchor=(1.0, 1.0), loc="upper left")
+    if legend:
+        ax.legend(bbox_to_anchor=(1, 1), loc="upper left", frameon=False)
     ax.set_title(country)
-    ax.set_ylabel("Primary energy consumption (EJ)")
+    ax.set_ylabel("Primary energy\nconsumption (EJ)")
     ax.get_xaxis().set_major_locator(MultipleLocator(10))
     ax.get_xaxis().set_minor_locator(MultipleLocator(1))
 
@@ -50,22 +60,9 @@ def primary_energy(path_to_data: str, country: str, path_to_plot: str):
     if ax.get_ylim()[1] < 10:
         ax.set_ylim(top=10)
 
-    sns.despine(fig)
-    fig.tight_layout()
-    fig.savefig(path_to_plot)
-
-
-def from_twh_to_exajoules(df: pd.DataFrame):
-    return pd.DataFrame(
-        data=df.values,
-        index=df.index,
-        columns=df.columns
-    )
-
 
 if __name__ == "__main__":
-    primary_energy(
+    primary_energy_all_countries(
         path_to_data=snakemake.input.data,
-        country=snakemake.wildcards.country,
         path_to_plot=snakemake.output[0]
     )
