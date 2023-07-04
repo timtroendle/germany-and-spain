@@ -22,21 +22,21 @@ rule factors:
     script: "../scripts/preprocess/factors.py"
 
 
-rule extract_primary_energy_from_excel:
-    message: "Extract primary energy data from Excel file."
-    input:
-        data = config["data-sources"]["primary-energy"]["path"]
-    params:
-        dataset_config = config["data-sources"]["primary-energy"]["datasets"]
-    output: "build/data/raw-primary-energy.nc"
-    conda: "../envs/preprocess.yaml"
-    script: "../scripts/preprocess/extract.py"
+rule download_primary_energy:
+    message: "Download primary energy file."
+    params: url = config["data-sources"]["primary-energy"]["url"]
+    output:
+        protected("data/automatic/raw-primary-energy.xslx")
+    shell:
+        "curl -sLo {output} '{params.url}'"
 
 
 rule primary_energy:
     message: "Preprocess primary energy data."
     input:
-        data = rules.extract_primary_energy_from_excel.output[0]
+        data = rules.download_primary_energy.output[0]
+    params:
+        carriers = config["data-sources"]["primary-energy"]["carriers"]
     output: "build/data/primary-energy-ej.csv"
     conda: "../envs/preprocess.yaml"
     script: "../scripts/preprocess/primary_energy.py"

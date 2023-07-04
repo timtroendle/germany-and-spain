@@ -17,17 +17,17 @@ data-sources:
             - ["Power", "energy-in", 8]
             - ["Power", "energy-out", 13]
     primary-energy:
-        path: "data/Germany & Spain Data.xlsx"
-        datasets:
-            - ["Primary energy", "coal", 2]
-            - ["Primary energy", "oil", 7]
-            - ["Primary energy", "gas", 12]
-            - ["Primary energy", "hydro", 17]
-            - ["Primary energy", "nuclear", 22]
-            - ["Primary energy", "biofuel", 47]
-            - ["Primary energy", "solar", 37]
-            - ["Primary energy", "wind", 42]
-            - ["Primary energy", "other renewable", 52]
+        url: https://www.energyinst.org/__data/assets/excel_doc/0007/1055545/EI-stats-review-all-data.xlsx
+        carriers:
+            coal: Coal Consumption - EJ
+            oil: Oil Consumption - EJ
+            gas: Gas Consumption - EJ
+            hydro: Hydro Consumption - EJ
+            nuclear: Nuclear Consumption - EJ
+            biofuel: Biofuels consumption - PJ
+            solar: Solar Consumption - EJ
+            wind: Wind Consumption - EJ
+            other renewable: Geo Biomass Other - EJ
 parameters:
     first-year: 1998
     final-year: 2021
