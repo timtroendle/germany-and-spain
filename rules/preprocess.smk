@@ -40,3 +40,12 @@ rule primary_energy:
     output: "build/data/primary-energy-ej.csv"
     conda: "../envs/preprocess.yaml"
     script: "../scripts/preprocess/primary_energy.py"
+
+
+rule emissions:
+    message: "Download and preprocess emissions data."
+    params:
+        **config["data-sources"]["emissions"]
+    output: "data/automatic/raw-emissions-mt.csv"
+    conda: "../envs/preprocess.yaml"
+    script: "../scripts/preprocess/eurostat.py"

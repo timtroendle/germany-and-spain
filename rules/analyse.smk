@@ -49,10 +49,10 @@ rule primary_energy_plot:
 rule emissions_plot:
     message: "Plot sectoral emission time series."
     input:
-        industry = "build/data/factors-industry.nc",
-        transport = "build/data/factors-transport.nc",
-        power = "build/data/factors-power.nc"
-    params: periods = config["parameters"]["periods"]
+        emissions = rules.emissions.output[0]
+    params:
+        first_year = config["parameters"]["first-year"],
+        periods = config["parameters"]["periods"]
     output: "build/figures/sectoral-emissions.png"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/sectoral_emissions.py"

@@ -28,9 +28,24 @@ data-sources:
             solar: Solar Consumption - EJ
             wind: Wind Consumption - EJ
             other renewable: Geo Biomass Other - EJ
+    emissions:
+        name: emissions_mt
+        eurostat-dataset-code: env_air_gge
+        filter-pars:
+            unit: ["MIO_T"]
+            geo: ["DE", "ES"]
+            src_crf: ["CRF1A2", "CRF1A3", "CRF1A1A", "CRF1A4B"]
+            airpol: ["CO2"]
+        cat-mapping:
+            src_crf:
+                CRF1A2: industry
+                CRF1A3: transport
+                CRF1A1A: power
+                CRF1A4B: households
+        col-name-mapping:
+            src_crf: sector
 parameters:
     first-year: 1998
-    final-year: 2021
     periods:
         Germany:
             pre: [1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007]

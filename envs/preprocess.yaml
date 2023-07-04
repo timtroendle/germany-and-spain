@@ -8,3 +8,7 @@ dependencies:
     - openpyxl=3.0.9
     - xarray=2022.3.0
     - netcdf4=1.5.8
+    - pycountry=22.3.5
+    - pip=23.1.2
+    - pip:
+        - eurostat==1.0.4
