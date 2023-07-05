@@ -29,18 +29,14 @@ def time_series_plot_all_countries(emissions: pd.DataFrame, path_to_plot: str, f
     axes = fig.subplots(len(emissions.country), 1, sharex=True, sharey=True)
     for i, (ax, country) in enumerate(zip(axes, emissions.country)):
         country = country.item()
-        time_series = [
-            (
-                emissions
-                .sel(country=country, sector=sector, drop=True)
-                .to_dataframe()
-                .rename_axis(index="Year")
-                .loc[first_year:]
-            )
-            for sector in emissions.sector
-        ]
+        normed_time_series = (
+            emissions
+            .sel(country="Germany", year=slice(1998, None), drop=True)
+        )
+        normed_time_series = normed_time_series / normed_time_series.isel(year=0)
+
         time_series_plot_single_country(
-            *time_series,
+            normed_time_series.to_dataframe()["emissions_mt"],
             country=country,
             ax=ax,
             legend=True if i == 0 else False,
@@ -53,14 +49,16 @@ def time_series_plot_all_countries(emissions: pd.DataFrame, path_to_plot: str, f
     fig.savefig(path_to_plot)
 
 
-def time_series_plot_single_country(industry: pd.DataFrame, power: pd.DataFrame, transport: pd.DataFrame,
-                                    households: pd.DataFrame, country: str, ax: plt.Axes, legend: bool,
+def time_series_plot_single_country(df: pd.DataFrame, country: str, ax: plt.Axes, legend: bool,
                                     first_year: int, periods: dict[str, list[int]]):
     ax.set_prop_cycle(color=COLOR_PALETTE[:6], linestyle=['-', '--', '-.', ':', '--', '-.'])
-    ax.plot(industry.div(industry.iloc[0]), label="Industry")
-    ax.plot(power.div(power.iloc[0]), label="Power")
-    ax.plot(transport.div(transport.iloc[0]), label="Transport")
-    ax.plot(households.div(households.iloc[0]), label="Households")
+    (
+        df
+        .unstack(0)
+        .rename(columns=lambda name: name.capitalize())
+        .rename_axis(index="Year")
+        .plot(ax=ax)
+    )
 
     ax.set_ylabel(f"Change since {first_year}")
     ax.get_xaxis().set_major_locator(MultipleLocator(2))
