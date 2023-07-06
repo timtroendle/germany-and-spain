@@ -1,57 +1,35 @@
+import pandas as pd
 import xarray as xr
 
 
-def factors(path_to_data: str, paths_to_output: list[str]):
-    ds = xr.open_dataset(path_to_data)
-    (
+def factors(emissions: xr.DataArray, population: xr.DataArray, gdp: xr.DataArray, energy: xr.DataArray) -> xr.Dataset:
+    return (
         xr
         .Dataset({
-            "emissions": ds["Total-emissions"],
-            "population": ds["Total-population"],
-            "affluence": ds["Total-gdp"] / ds["Total-population"],
-            "energy-intensity": ds["Total-energy"] / ds["Total-gdp"],
-            "carbon-intensity": ds["Total-emissions"] / ds["Total-energy"]
+            "emissions": emissions,
+            "population": population,
+            "affluence": gdp / population,
+            "energy-intensity": energy / gdp,
+            "carbon-intensity": emissions / energy
         })
-        .to_netcdf(paths_to_output.total)
     )
-    (
-        xr
-        .Dataset({
-            "emissions": ds["Industry-emissions"],
-            "gdp": ds["Total-gdp"],
-            "gdp-share": ds["Industry-gdp"] / ds["Total-gdp"],
-            "energy-intensity": ds["Industry-energy"] / ds["Industry-gdp"],
-            "carbon-intensity": ds["Industry-emissions"] / ds["Industry-energy"]
-        })
-        .to_netcdf(paths_to_output.industry)
-    )
-    (
-        xr
-        .Dataset({
-            "emissions": ds["Transport-emissions"],
-            "population": ds["Total-population"],
-            "affluence": ds["Total-gdp"] / ds["Total-population"],
-            "energy-intensity": ds["Transport-energy"] / ds["Total-gdp"],
-            "carbon-intensity": ds["Transport-emissions"] / ds["Transport-energy"]
-        })
-        .to_netcdf(paths_to_output.transport)
-    )
-    (
-        xr
-        .Dataset({
-            "emissions": ds["Power-emissions"],
-            "population": ds["Total-population"],
-            "affluence": ds["Total-gdp"] / ds["Total-population"],
-            "efficiency": ds["Power-energy-in"] / ds["Power-energy-out"],
-            "energy-intensity": ds["Power-energy-out"] / ds["Total-gdp"],
-            "carbon-intensity": ds["Power-emissions"] / ds["Power-energy-in"]
-        })
-        .to_netcdf(paths_to_output.power)
+
+
+def read_file(path_to_file: str) -> xr.DataArray:
+    return (
+        pd
+        .read_csv(path_to_file, index_col=[0, 1])
+        .to_xarray()
+        .to_array()
+        .isel(variable=0, drop=True)
     )
 
 
 if __name__ == "__main__":
-    factors(
-        path_to_data=snakemake.input.data,
-        paths_to_output=snakemake.output
+    ds = factors(
+        emissions=read_file(snakemake.input.emissions),
+        gdp=read_file(snakemake.input.gdp),
+        energy=read_file(snakemake.input.energy),
+        population=read_file(snakemake.input.population),
     )
+    ds.to_netcdf(snakemake.output[0])

@@ -1,24 +1,9 @@
 # The right place for all your configuration values.
 data-sources:
-    factors:
-        path: "data/Germany & Spain Data.xlsx"
-        datasets:
-            - ["Total", "emissions", 4]
-            - ["Total", "energy", 9]
-            - ["Total", "gdp", 14]
-            - ["Total", "population", 19]
-            - ["Industry", "emissions", 3]
-            - ["Industry", "energy", 8]
-            - ["Industry", "gdp", 13]
-            - ["Transport", "emissions", 3]
-            - ["Transport", "energy", 8]
-            - ["Transport", "gdp", 13]
-            - ["Power", "emissions", 3]
-            - ["Power", "energy-in", 8]
-            - ["Power", "energy-out", 13]
-    primary-energy:
+    bp:
         url: https://www.energyinst.org/__data/assets/excel_doc/0007/1055545/EI-stats-review-all-data.xlsx
-        carriers:
+    primary-energy-by-fuel:
+        variables:
             coal: Coal Consumption - EJ
             oil: Oil Consumption - EJ
             gas: Gas Consumption - EJ
@@ -28,7 +13,16 @@ data-sources:
             solar: Solar Consumption - EJ
             wind: Wind Consumption - EJ
             other renewable: Geo Biomass Other - EJ
+        scale: True
     emissions:
+        variables:
+            emissions_mt: CO2 Emissions from Energy
+        scale: False
+    primary-energy:
+        variables:
+            primary_energy_ej: Primary Energy Consumption
+        scale: False
+    sectoral-emissions:
         name: emissions_mt
         eurostat-dataset-code: env_air_gge
         filter-pars:
@@ -44,6 +38,27 @@ data-sources:
                 CRF1A4B: households
         col-name-mapping:
             src_crf: sector
+        additional-index-cols: ["sector"]
+    population:
+        name: population
+        eurostat-dataset-code: DEMO_PJAN
+        filter-pars:
+            geo: ["DE", "ES"]
+            age: ["TOTAL"]
+            sex: ["T"]
+        cat-mapping: {}
+        col-name-mapping: {}
+        additional-index-cols: []
+    gdp:
+        name: gdp_meur
+        eurostat-dataset-code: NAMA_10_GDP
+        filter-pars:
+            unit: ["CLV15_MEUR"]
+            geo: ["DE", "ES"]
+            na_item: ["B1GQ"]
+        cat-mapping: {}
+        col-name-mapping: {}
+        additional-index-cols: []
 parameters:
     first-year: 1998
     periods:

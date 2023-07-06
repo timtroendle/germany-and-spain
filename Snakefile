@@ -1,7 +1,6 @@
 from snakemake.utils import min_version
 
 COUNTRIES = ["Germany", "Spain"]
-SECTORS = ["total", "industry", "transport", "power"]
 
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
@@ -19,25 +18,13 @@ onerror:
 rule all:
     message: "Run all analysis steps."
     input:
-        expand(
-            "build/figures/{sector}-time-series.png",
-            country=COUNTRIES,
-            sector=SECTORS
-        ),
+        "build/figures/contribution-time-series.png",
         "build/figures/sectoral-emissions.png",
-        "build/figures/primary-energy.png",
-        expand(
-            "build/results/relative-cumulative-contribution-factors-{sector}.csv",
-            sector=SECTORS
-        ),
-        expand(
-            "build/results/multiplicative-contribution-factors-{sector}.csv",
-            sector=SECTORS
-        ),
-        expand(
-            "build/results/periods-{sector}.csv",
-            sector=SECTORS
-        )
+        "build/figures/primary-energy-by-fuel.png",
+        "build/results/factors.csv",
+        "build/results/relative-cumulative-contribution-factors.csv",
+        "build/results/multiplicative-contribution-factors.csv",
+        "build/results/periods.csv",
 
 
 rule dag:
