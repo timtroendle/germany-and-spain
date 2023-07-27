@@ -56,10 +56,3 @@ rule clean: # removes all generated results
 
          shutil.rmtree("build")
          print("Data downloaded to data/ has not been cleaned.")
-
-
-rule test:
-    conda: "envs/test.yaml"
-    output: "build/test-report.html"
-    shell:
-        "py.test --html={output} --self-contained-html"
