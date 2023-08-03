@@ -31,7 +31,7 @@ def time_series_plot_all_countries(emissions: pd.DataFrame, path_to_plot: str, f
         country = country.item()
         normed_time_series = (
             emissions
-            .sel(country="Germany", year=slice(1998, None), drop=True)
+            .sel(country=country, year=slice(1998, None), drop=True)
         )
         normed_time_series = normed_time_series / normed_time_series.isel(year=0)
 
