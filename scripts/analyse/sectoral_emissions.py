@@ -20,6 +20,7 @@ COLOR_PALETTE = [ # Nature colors
 sns.set_palette(COLOR_PALETTE)
 GREY = "#7F7F7F"
 CRISES = ["global-financial", "covid"]
+MARKER_SIZE = 3
 
 
 def time_series_plot_all_countries(emissions: pd.DataFrame, path_to_plot: str, first_year: int,
@@ -57,7 +58,7 @@ def time_series_plot_single_country(df: pd.DataFrame, country: str, ax: plt.Axes
         .unstack(0)
         .rename(columns=lambda name: name.capitalize())
         .rename_axis(index="Year")
-        .plot(ax=ax)
+        .plot(ax=ax, marker="o", markersize=MARKER_SIZE)
     )
 
     ax.set_ylabel(f"Change since {first_year}")

@@ -21,6 +21,7 @@ COLOR_PALETTE = [ # Nature colors
 sns.set_palette(COLOR_PALETTE)
 GREY = "#7F7F7F"
 CRISES = ["global-financial", "covid"]
+MARKER_SIZE = 3
 
 
 def time_series_plot_all_countries(path_to_contribution_factors: str, path_to_plot: str,
@@ -57,8 +58,8 @@ def time_series_plot_all_countries(path_to_contribution_factors: str, path_to_pl
 def time_series_plot_single_countries(factors: pd.DataFrame, country: str, ax: plt.Axes, legend: bool,
                                       periods: dict[str, list[int]]):
     ax.set_prop_cycle(color=COLOR_PALETTE[:6], linestyle=['-', '--', '-.', ':', '--', '-.'])
-    factors["Emissions"].plot(ax=ax, linewidth=2.5, color=COLOR_PALETTE[0])
-    factors.drop(columns=["Emissions"]).plot(ax=ax)
+    factors["Emissions"].plot(ax=ax, linewidth=2, color=COLOR_PALETTE[0], marker="o", markersize=MARKER_SIZE + 1)
+    factors.drop(columns=["Emissions"]).plot(ax=ax, marker="o", markersize=MARKER_SIZE)
     ax.set_ylabel("Change since 1998")
     ax.get_xaxis().set_major_locator(MultipleLocator(2))
     ax.get_xaxis().set_minor_locator(MultipleLocator(1))
