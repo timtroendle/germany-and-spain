@@ -68,8 +68,8 @@ def time_series_plot_single_country(df: pd.DataFrame, country: str, ax: plt.Axes
 
     for i, crisis in enumerate(CRISES):
         ax.axvspan(
-            xmin=periods[crisis][0],
-            xmax=periods[crisis][-1] + 1,
+            xmin=periods[crisis][0] - 0.5,
+            xmax=periods[crisis][-1] + 0.5,
             ymin=0,
             ymax=1,
             linewidth=0.0,
